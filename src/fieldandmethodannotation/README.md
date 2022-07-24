@@ -1,0 +1,1 @@
+Some custom annotation examples for type, field and method annotations
