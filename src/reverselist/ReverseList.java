@@ -45,12 +45,17 @@ public class ReverseList {
         return node;
     }
 
+    public static void printList(ListNode head) {
+        if (head == null) return;
+        System.out.print(head.val + "->");
+        printList(head.next);
+    }
+
     public static void main(String[] args) {
         ListNode head = initList(1, 2, 3,4);
+        printList(head);
         head = reverseList(head);
-        while (head != null) {
-            System.out.print(head.val + "->");
-            head = head.next;
-        }
+        System.out.println();
+        printList(head);
     }
 }
