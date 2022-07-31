@@ -27,7 +27,7 @@ public class ReverseList {
         }
     }
 
-    public static ListNode initList(int... numbers) {
+    private static ListNode initList(int... numbers) {
         ListNode node = new ListNode(numbers[0]);
         ListNode first = node;
         for (int i = 1; i < numbers.length; i++) {
@@ -37,6 +37,12 @@ public class ReverseList {
         return first;
     }
 
+    /**
+     * Reverses passed list using recursion
+     *
+     * @param head head of the list
+     * @return - new head after reversing
+     */
     public static ListNode reverseList(ListNode head) {
         if (head.next == null) return head;
         ListNode node = reverseList(head.next);
@@ -45,17 +51,47 @@ public class ReverseList {
         return node;
     }
 
-    public static void printList(ListNode head) {
+    /**
+     * Reverses given part of passed list using recursion
+     *
+     * @param head - list head
+     * @param left - position of element to start reverse
+     * @param right - position of element to end reverse
+     * @return - reversed list head
+     */
+    public static ListNode reverseBetween(ListNode head, int left, int right) {
+        ListNode nodeLeft = head;
+        ListNode nodeRight = head;
+        for (int i = 0; i < right; i++) {
+            if(i + 1 == left - 1) nodeLeft = nodeRight;
+            nodeRight = nodeRight.next;
+        }
+
+        class Reverser {
+            static ListNode reverseList(ListNode left, ListNode right) {
+                if (left.next == right) return left;
+                ListNode node = reverseList(left.next, right);
+                left.next.next = left;
+                left.next = right;
+                return node;
+            }
+        }
+
+        nodeLeft.next = Reverser.reverseList(nodeLeft.next, nodeRight);
+        return head;
+    }
+
+    private static void printList(ListNode head) {
         if (head == null) return;
         System.out.print(head.val + "->");
         printList(head.next);
     }
 
     public static void main(String[] args) {
-        ListNode head = initList(1, 2, 3,4);
+        ListNode head = initList(1, 2, 3, 4, 5);
         printList(head);
-        head = reverseList(head);
+
         System.out.println();
-        printList(head);
+        printList(reverseBetween(head,1,4));
     }
 }
