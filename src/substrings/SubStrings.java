@@ -1,9 +1,7 @@
 package substrings;
 
-import java.util.Comparator;
+
 import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 
 public class SubStrings {
@@ -31,7 +29,7 @@ public class SubStrings {
                 .entrySet()
                 .stream()
                 .sorted((e1, e2) -> e1.getValue() > e2.getValue() ? -1 : 1)
-                .forEach(e -> b.append(String.valueOf(e.getKey()).repeat(Math.max(0, e.getValue()))));
+                .forEach(e -> b.append(String.valueOf(e.getKey()).repeat(e.getValue())));
 
         return b.toString();
     }
