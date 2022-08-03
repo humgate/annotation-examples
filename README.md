@@ -3,3 +3,4 @@
 - Max contiguous sub array 
 - Max contiguous sub array of size k
 - CompletableFuture vs Future example
+- volatile example with explanations

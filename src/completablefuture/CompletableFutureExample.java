@@ -2,6 +2,7 @@ package completablefuture;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CompletableFutureExample {
@@ -16,7 +17,7 @@ public class CompletableFutureExample {
 
 
         // Non-blocking way (async)
-        CompletableFuture
+        CompletableFuture<Void> future = CompletableFuture
                 .supplyAsync(() -> calcSomeString(), executorService)
                 .thenAccept(s -> System.out.println(s + " " + LocalDateTime.now()));
         System.out.println("Started separate thread calculation " + LocalDateTime.now());
