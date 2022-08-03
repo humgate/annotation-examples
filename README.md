@@ -2,3 +2,4 @@
 - Reversing linked list using recursion
 - Max contiguous sub array 
 - Max contiguous sub array of size k
+- Sort string it in decreasing order based on the frequency of the characters
