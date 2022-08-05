@@ -2,11 +2,14 @@ package substrings;
 
 
 import java.util.HashMap;
+import java.util.Stack;
 
 
 public class SubStrings {
     public static String s = "taaareexeraa";
-    public static String s1 = "2[2[y]2[z]]";
+    public static String s1 = "3[2[cd]2[ef]]";
+
+    static Stack<String> stack = new Stack<>();
 
 
     /**
@@ -86,9 +89,12 @@ public class SubStrings {
                 return (current+next).repeat(repeat) + tail;
             }
 
-            current = s.substring(o + 1, o + nextc + 1);
-            if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
-            return current.repeat(repeat) + tail;
+            if (nexto >=nextc) {
+                current = s.substring(o + 1, o + nextc + 1);
+                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
+                return current.repeat(repeat) + tail;
+            }
+
         }
         return decodeString(s.substring(1));
     }
