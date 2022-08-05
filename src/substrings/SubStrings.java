@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class SubStrings {
     public static String s = "taaareexeraa";
-    public static String s1 = "2[q]3[a2[w2[c]]]2[s]2[x2[j]]";
+    public static String s1 = "2[2[y]2[z]]";
 
 
     /**
@@ -47,8 +47,25 @@ public class SubStrings {
     * that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
     */
     public static String decodeString(String s) {
-        //3[a2[w]2[t]]
-        if (s.matches("^[a-z]*$")) return s;
+        if (s.isEmpty()) return s;
+
+        int op = 0;
+        int cl = 0;
+        for (char c: s.toCharArray()) {
+            if (c == '[') op++;
+            if (c == ']') cl++;
+        }
+
+        String current = "";
+        String next = "";
+        String tail = "";
+
+        if (s.matches("^[a-z]+.+")) {
+            int i = 0;
+            while (i < s.length() && Character.isLetter(s.charAt(i))) i++;
+            if (op == cl) current = s.substring(0,i);
+            return current + decodeString(s.substring(i));
+        }
 
         if (s.matches("^\\d+\\[.*")) {
             int o = s.indexOf("[");
@@ -56,20 +73,10 @@ public class SubStrings {
             int nextc = s.substring(o + 1).indexOf("]");
             int repeat = Integer.parseInt(s.substring(0, o));
 
-            String current = "";
-            String next = "";
-            String tail = "";
-
-            int op = 0;
-            int cl = 0;
-            for (char c: s.toCharArray()) {
-                if (c == '[') op++;
-                if (c == ']') cl++;
-            }
-
             if (nexto == -1) {
                 current = s.substring(o + 1, o + 1 + nextc);
-                return current.repeat(repeat);
+                if (op == cl) tail = s.substring(o + 1 + nextc + 1);
+                return current.repeat(repeat) + tail;
             }
 
             if (nexto < nextc) {
@@ -79,19 +86,12 @@ public class SubStrings {
                 return (current+next).repeat(repeat) + tail;
             }
 
-            if (nexto >= nextc) {
-                current = s.substring(o + 1, o + nextc + 1);
-                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
-                return current.repeat(repeat) + tail;
-            }
-
+            current = s.substring(o + 1, o + nextc + 1);
+            if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
+            return current.repeat(repeat) + tail;
         }
-
         return decodeString(s.substring(1));
     }
-
-
-
 
     public static void main(String[] args) {
         String s2 = decodeString(s1);
