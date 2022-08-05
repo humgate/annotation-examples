@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class SubStrings {
     public static String s = "taaareexeraa";
-    public static String s1 = "3[a2[x]2[b]]";
+    public static String s1 = "3[a2[w]2[t]]";
 
 
     /**
@@ -47,38 +47,43 @@ public class SubStrings {
     * that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
     */
     public static String decodeString(String s) {
-        //3[a2[x]2[s]]
-        if (s.isEmpty()) return "";
+        //3[a2[w]]2[z]
+        if (s.matches("^[a-z]*$")) return s;
 
-//        if (s.matches("^\\d+\\[[a-z]+\\]{2,}.*")) {
-//            int i1 = s.indexOf("[");
-//            int i2 = s.indexOf("]");
-//            int repeat = Integer.parseInt(s.substring(0, i1));
-//            return s.substring(i1 + 1, i2).repeat(repeat);
-//        }
+        if (s.matches("^\\d+\\[.*")) {
+            int o = s.indexOf("[");
+            int nexto = s.substring(o + 1).indexOf("[");
+            int nextc = s.substring(o + 1).indexOf("]");
+            int repeat = Integer.parseInt(s.substring(0, o));
 
+            String current = "";
+            String next = "";
+            String tail = "";
+            if (nexto == -1) {
+                current = s.substring(o + 1, o + 1 + nextc);
+                return current.repeat(repeat);
+            }
 
-        if (s.matches("^\\d+\\[[a-z]+\\].*")) {
-            int i1 = s.indexOf("[");
-            int i2 = s.indexOf("]");
-            int repeat = Integer.parseInt(s.substring(0, i1));
-            return s.substring(i1 + 1, i2).repeat(repeat) + decodeString(s.substring(1));
+            if (nexto < nextc) {
+                current = s.substring(o + 1, o + nexto);
+                next = decodeString(s.substring(o + 1));
+
+                return (current+next).repeat(repeat) + decodeString(s.substring(o + 1 + nextc + 1));
+            }
+
+            if (nexto >= nextc) {
+                current = s.substring(o + 1, o + nextc + 1);
+                next = decodeString(s.substring(o + 1 + nextc));
+
+                if (s.charAt(o + 1 + nextc + 1) == ']') {
+                    return current.repeat(repeat);// + decodeString(s.substring(o + 1 + nextc));
+                } else {
+                    return current.repeat(repeat) + decodeString(s.substring(o + 1 + nextc));
+                }
+            }
         }
 
-        if (s.matches("^\\d+\\[[a-z]+.+")) {
-            String stemp = decodeString(s.substring(1));
-            int i1 = s.indexOf("[");
-            int i2 = s.substring(i1 + 1).indexOf("[");
-            int i3 = s.indexOf("]");
-            int repeat = Integer.parseInt(s.substring(0, i1));
-            String stemp2 = s.replace(s.substring(i1 + 2, i3 + 1), stemp);
-            i3 = stemp2.indexOf("]");
-            String stemp3 = stemp2.substring(i1 + 1, i3);
-
-            return stemp3.repeat(repeat);
-        }
-
-           return decodeString(s.substring(1));
+        return decodeString(s.substring(1));
     }
 
 
