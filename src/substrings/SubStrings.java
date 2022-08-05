@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class SubStrings {
     public static String s = "taaareexeraa";
-    public static String s1 = "3[a2[w]2[t]]";
+    public static String s1 = "2[q]3[a2[w2[c]]]2[s]2[x2[j]]";
 
 
     /**
@@ -47,7 +47,7 @@ public class SubStrings {
     * that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
     */
     public static String decodeString(String s) {
-        //3[a2[w]]2[z]
+        //3[a2[w]2[t]]
         if (s.matches("^[a-z]*$")) return s;
 
         if (s.matches("^\\d+\\[.*")) {
@@ -59,6 +59,14 @@ public class SubStrings {
             String current = "";
             String next = "";
             String tail = "";
+
+            int op = 0;
+            int cl = 0;
+            for (char c: s.toCharArray()) {
+                if (c == '[') op++;
+                if (c == ']') cl++;
+            }
+
             if (nexto == -1) {
                 current = s.substring(o + 1, o + 1 + nextc);
                 return current.repeat(repeat);
@@ -67,20 +75,16 @@ public class SubStrings {
             if (nexto < nextc) {
                 current = s.substring(o + 1, o + nexto);
                 next = decodeString(s.substring(o + 1));
-
-                return (current+next).repeat(repeat) + decodeString(s.substring(o + 1 + nextc + 1));
+                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
+                return (current+next).repeat(repeat) + tail;
             }
 
             if (nexto >= nextc) {
                 current = s.substring(o + 1, o + nextc + 1);
-                next = decodeString(s.substring(o + 1 + nextc));
-
-                if (s.charAt(o + 1 + nextc + 1) == ']') {
-                    return current.repeat(repeat);// + decodeString(s.substring(o + 1 + nextc));
-                } else {
-                    return current.repeat(repeat) + decodeString(s.substring(o + 1 + nextc));
-                }
+                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
+                return current.repeat(repeat) + tail;
             }
+
         }
 
         return decodeString(s.substring(1));
