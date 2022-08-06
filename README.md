@@ -4,3 +4,4 @@
 - Max contiguous sub array of size k
 - CompletableFuture vs Future example
 - volatile example with explanations
+- Decode strings coded like `3[ab]2[c]` to `abababcc`
