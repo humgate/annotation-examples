@@ -4,6 +4,7 @@ import substrings.SubStrings;
 
 public class SubStringsTest {
 
+
     @Test
     public void decodeStringTest_One() {
         String str = SubStrings.decodeString("3[a]2[bc]");
@@ -11,6 +12,7 @@ public class SubStringsTest {
     }
 
     @Test
+
     public void decodeStringTest_Two() {
         String str = SubStrings.decodeString("3[a2[c]]");
         Assertions.assertEquals("accaccacc", str);
@@ -41,12 +43,6 @@ public class SubStringsTest {
     }
 
     @Test
-    public void decodeStringTest_Six_One() {
-        String str = SubStrings.decodeString("3a[2f[2[cd]]]");
-        Assertions.assertEquals("affcdcdffcdcdaffcdcdffcdcdaffcdcdffcdcd", str);
-    }
-
-    @Test
     public void decodeStringTest_Seven() {
         String str = SubStrings.decodeString("aaa3[2[cd]]");
         Assertions.assertEquals("aaacdcdcdcdcdcd", str);
@@ -62,6 +58,12 @@ public class SubStringsTest {
     public void decodeStringTest_Nine() {
         String str = SubStrings.decodeString("aaa");
         Assertions.assertEquals("aaa", str);
+    }
+
+    @Test
+    public void decodeStringTest_Ten() {
+        String str = SubStrings.decodeString("10[ab]");
+        Assertions.assertEquals("abababababababababab", str);
     }
 
 

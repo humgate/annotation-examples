@@ -1,15 +1,18 @@
 package substrings;
 
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class SubStrings {
     public static String s = "taaareexeraa";
-    public static String s1 = "3[2[cd]2[ef]]";
-
-    static Stack<String> stack = new Stack<>();
+    public static String s1 = "10[leetcode]";
+    static Pattern p = Pattern.compile("\\d+\\[+?[a-z]+\\]");
 
 
     /**
@@ -48,59 +51,23 @@ public class SubStrings {
     * You may assume that the input string is always valid; there are no extra white spaces, square brackets are
     * well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and
     * that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+    * @param s - given string
+    * @return - result string
     */
     public static String decodeString(String s) {
-        if (s.isEmpty()) return s;
+        Matcher m = p.matcher(s);
 
-        int op = 0;
-        int cl = 0;
-        for (char c: s.toCharArray()) {
-            if (c == '[') op++;
-            if (c == ']') cl++;
-        }
+        String res = m.replaceAll(mr -> {
+            int o = s.indexOf('[', mr.start());
+            int r = Integer.parseInt(s.substring(mr.start(), o));
+            String temp = s.substring(o + 1, mr.end() - 1);
+            return temp.repeat(r);
+        });
 
-        String current = "";
-        String next = "";
-        String tail = "";
-
-        if (s.matches("^[a-z]+.+")) {
-            int i = 0;
-            while (i < s.length() && Character.isLetter(s.charAt(i))) i++;
-            if (op == cl) current = s.substring(0,i);
-            return current + decodeString(s.substring(i));
-        }
-
-        if (s.matches("^\\d+\\[.*")) {
-            int o = s.indexOf("[");
-            int nexto = s.substring(o + 1).indexOf("[");
-            int nextc = s.substring(o + 1).indexOf("]");
-            int repeat = Integer.parseInt(s.substring(0, o));
-
-            if (nexto == -1) {
-                current = s.substring(o + 1, o + 1 + nextc);
-                if (op == cl) tail = s.substring(o + 1 + nextc + 1);
-                return current.repeat(repeat) + tail;
-            }
-
-            if (nexto < nextc) {
-                current = s.substring(o + 1, o + nexto);
-                next = decodeString(s.substring(o + 1));
-                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
-                return (current+next).repeat(repeat) + tail;
-            }
-
-            if (nexto >=nextc) {
-                current = s.substring(o + 1, o + nextc + 1);
-                if (op == cl) tail = decodeString(s.substring(o + 1 + nextc));
-                return current.repeat(repeat) + tail;
-            }
-
-        }
-        return decodeString(s.substring(1));
+        if (s.equals(res)) return s;
+        return decodeString(res);
     }
-
     public static void main(String[] args) {
-        String s2 = decodeString(s1);
-        System.out.println(s2);
+        System.out.println(decodeString(s1));
     }
 }
