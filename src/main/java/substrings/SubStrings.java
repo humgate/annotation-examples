@@ -1,14 +1,12 @@
 package substrings;
 
 
-import java.util.HashMap;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
 public class SubStrings {
-    public static String s = "taaareexeraa";
-    public static String s1 = "10[leetcode]";
     static Pattern p = Pattern.compile("\\d+\\[+?[a-z]+\\]");
 
 
@@ -64,7 +62,76 @@ public class SubStrings {
         if (s.equals(res)) return s;
         return decodeString(res);
     }
+
+    /**
+     * Description from leetcode:
+     * Given an array of characters chars, compress it using the following algorithm:
+     * Input: chars = ["a","a","b","b","c","c","c"]
+     * Output: Return 6, and the first 6 characters of the input array should be: ["a","2","b","2","c","3"]
+     * Compressed string s should be stored in the input character array chars.
+     * Note that group lengths that are 10 or longer will be split into multiple characters in chars.
+     *
+     * @param chars - input char sequence
+     * @return length of compressed sequence
+     */
+    public static int compress(char[] chars) {
+        List<Character> list = new LinkedList<>();
+        int i = 0;
+        int count = 1;
+
+        while (i < chars.length) {
+            int j = 1;
+            while ((i + j) < chars.length) {
+                if (chars[i] == chars[i + j]) {
+                    count++;
+                    j++;
+                } else {
+                    break;
+                }
+            }
+
+            if (count < 10) {
+                list.add(chars[i]);
+                if (count !=1) list.add(Character.forDigit(count % 10, 10));
+            }
+
+            if (count >= 10) {
+                list.add(chars[i]);
+                char[] temp = String.valueOf(count).toCharArray();
+                for (char c: temp) {
+                    list.add(c);
+                }
+            }
+            i += count;
+            count = 1;
+        }
+
+        i = 0;
+        for (Character c : list) {
+            chars[i] = c;
+            i++;
+        }
+        return list.size();
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(decodeString(s1));
+       //System.out.println(decodeString("2[ab]2[q]x"));
+
+        //char[] chars = {'a','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','c','c','c','c','c','c','c','c','c','c','c','c','c','c'};
+        //char[] chars = {'a'};
+        char[] chars = new char[1000];
+        {
+            for (int i = 0; i < 1000; i++) {
+                chars[i] = 'a';
+            }
+        }
+
+        int reslength =  compress(chars);
+
+        for (int i = 0; i < reslength; i++) {
+            char c = chars[i];
+            System.out.print(c + ",");
+        }
     }
 }
