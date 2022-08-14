@@ -2,6 +2,8 @@ package substrings;
 
 
 import java.util.*;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -63,6 +65,7 @@ public class SubStrings {
         return decodeString(res);
     }
 
+
     /**
      * Description from leetcode:
      * Given an array of characters chars, compress it using the following algorithm:
@@ -116,22 +119,6 @@ public class SubStrings {
 
 
     public static void main(String[] args) {
-       //System.out.println(decodeString("2[ab]2[q]x"));
-
-        //char[] chars = {'a','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','b','c','c','c','c','c','c','c','c','c','c','c','c','c','c'};
-        //char[] chars = {'a'};
-        char[] chars = new char[1000];
-        {
-            for (int i = 0; i < 1000; i++) {
-                chars[i] = 'a';
-            }
-        }
-
-        int reslength =  compress(chars);
-
-        for (int i = 0; i < reslength; i++) {
-            char c = chars[i];
-            System.out.print(c + ",");
-        }
+        System.out.println(decodeString("2[2[ab]2[q]x]"));
     }
 }
